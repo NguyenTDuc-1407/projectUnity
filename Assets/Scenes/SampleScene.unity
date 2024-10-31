@@ -495,9 +495,9 @@ MonoBehaviour:
   nowHpEnemy: 0
   healthBar: {fileID: 1232672098}
   seeker: {fileID: 562095926}
-  target: {fileID: 1442817938}
   moveSpeed: 3
   nextWpDis: 0.3
+  roaming: 1
 --- !u!114 &562095926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -894,7 +894,39 @@ MonoBehaviour:
     _MeshEdgeColor: {r: 0, g: 0, b: 0, a: 0.5}
     _AreaColors:
     - {r: 0, g: 0, b: 0, a: 0}
-  tagNames: []
+  tagNames:
+  - Basic Ground
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 20
+  - 21
+  - 22
+  - 23
+  - 24
+  - 25
+  - 26
+  - 27
+  - 28
+  - 29
+  - 30
+  - 31
   heuristic: 2
   heuristicScale: 1
   threadCount: 1
