@@ -9,11 +9,12 @@ public class enemy : MonoBehaviour
     [SerializeField] int nowHpEnemy;
     [SerializeField] health healthBar;
     public Seeker seeker;
-    public Transform target;
     Path path;
-    [SerializeField]float moveSpeed;
+    [SerializeField] float moveSpeed;
 
-    [SerializeField]float nextWpDis;
+    [SerializeField] float nextWpDis;
+
+   [SerializeField] bool roaming = true;
 
 
     Coroutine move;
@@ -22,8 +23,7 @@ public class enemy : MonoBehaviour
         nowHpEnemy = maxHpEnemy;
         healthBar.hpEnemys(nowHpEnemy, maxHpEnemy);
 
-        target = FindObjectOfType<player>().gameObject.transform;
-        caculatePath();
+        InvokeRepeating("caculatePath",0f,0.5f);
     }
     public void takeDamageEnemy(int damage)
     {
@@ -35,13 +35,23 @@ public class enemy : MonoBehaviour
         }
 
     }
-
     void caculatePath()
     {
+        Vector2 target = findTarget();
         if (seeker.IsDone())
         {
-            seeker.StartPath(transform.position, target.position, OnpathCallBack);
-
+            seeker.StartPath(transform.position, target, OnpathCallBack);
+        }
+    }
+    Vector2 findTarget(){
+        Vector3 playPos = FindObjectOfType<player>().transform.position;
+        if (roaming == true)
+        {
+            return (Vector2)playPos + (Random.Range(10f,50f) * new Vector2(Random.Range(-1,1),Random.Range(-1,1)).normalized);
+            
+        }else
+        {
+            return playPos;
         }
     }
     void OnpathCallBack(Path p)
@@ -49,33 +59,34 @@ public class enemy : MonoBehaviour
         if (p.error)
         {
             return;
-            path = p;
         }
+        path = p;
+        moveTager();
 
     }
-    void moveTager(){
-        if (move!=null)
+    void moveTager()
+    {
+        if (move != null)
         {
             StopCoroutine(move);
         }
         move = StartCoroutine(moveTagerCoroutine());
     }
-    IEnumerator moveTagerCoroutine(){
+    IEnumerator moveTagerCoroutine()
+    {
         int currentWp = 0;
-        while (currentWp<path.vectorPath.Count)
+        while (currentWp < path.vectorPath.Count)
         {
-            Vector2 direction = ((Vector2)path.vectorPath[currentWp]-(Vector2)transform.position).normalized;
-            Vector3 force = direction * moveSpeed*Time.deltaTime;
+            Vector2 direction = ((Vector2)path.vectorPath[currentWp] - (Vector2)transform.position).normalized;
+            Vector3 force = direction * moveSpeed * Time.deltaTime;
             transform.position += force;
 
-            float dis = Vector2.Distance(transform.position,path.vectorPath[currentWp]);
-            if (dis<nextWpDis)
+            float dis = Vector2.Distance(transform.position, path.vectorPath[currentWp]);
+            if (dis < nextWpDis)
             {
                 currentWp++;
             }
             yield return null;
-            // new WaitForSeconds(2f)
-
         }
     }
     void Update()
