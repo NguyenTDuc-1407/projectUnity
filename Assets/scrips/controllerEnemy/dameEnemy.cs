@@ -14,5 +14,4 @@ public class dameEnemy : MonoBehaviour
             other.GetComponent<enemy>().takeDamageEnemy(damage);
         }
     }
-
 }
