@@ -8,9 +8,7 @@ public class NewBehaviourScript : MonoBehaviour
     public Transform firePos;
     public float timeShoot = 0.2f;
     public float bulletForce;
-
     private float timeBtwFire;
-
     Rigidbody2D rb;
     void Update()
     {
@@ -19,7 +17,6 @@ public class NewBehaviourScript : MonoBehaviour
         {
             fireButter();
         }
-
     }
     void fireButter()
     {

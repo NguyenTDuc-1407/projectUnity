@@ -11,30 +11,29 @@ public class enemy : MonoBehaviour
     public Seeker seeker;
     Path path;
     [SerializeField] float moveSpeed;
-
     [SerializeField] float nextWpDis;
-
-   [SerializeField] bool roaming = true;
-
-
+    [SerializeField] bool roaming = true;
     Coroutine move;
     void Start()
     {
         nowHpEnemy = maxHpEnemy;
         healthBar.hpEnemys(nowHpEnemy, maxHpEnemy);
-
-        InvokeRepeating("caculatePath",0f,0.5f);
+        InvokeRepeating("caculatePath", 0f, 0.5f);
     }
     public void takeDamageEnemy(int damage)
     {
         nowHpEnemy = nowHpEnemy - damage;
         healthBar.hpEnemys(nowHpEnemy, maxHpEnemy);
-        if (nowHpEnemy < 0)
+        if (nowHpEnemy <= 0)
         {
-
+            nowHpEnemy = 0;
+            healthBar.hpEnemys(nowHpEnemy, maxHpEnemy);
+            Destroy(this.gameObject,0.15f);
         }
 
     }
+
+    //huong di den player
     void caculatePath()
     {
         Vector2 target = findTarget();
@@ -43,13 +42,16 @@ public class enemy : MonoBehaviour
             seeker.StartPath(transform.position, target, OnpathCallBack);
         }
     }
-    Vector2 findTarget(){
+
+    //location player
+    Vector2 findTarget()
+    {
         Vector3 playPos = FindObjectOfType<player>().transform.position;
         if (roaming == true)
         {
-            return (Vector2)playPos + (Random.Range(10f,50f) * new Vector2(Random.Range(-1,1),Random.Range(-1,1)).normalized);
-            
-        }else
+            return (Vector2)playPos + (Random.Range(10f, 50f) * new Vector2(Random.Range(-1, 1), Random.Range(-1, 1)).normalized);
+        }
+        else
         {
             return playPos;
         }
@@ -62,7 +64,6 @@ public class enemy : MonoBehaviour
         }
         path = p;
         moveTager();
-
     }
     void moveTager()
     {
@@ -72,6 +73,7 @@ public class enemy : MonoBehaviour
         }
         move = StartCoroutine(moveTagerCoroutine());
     }
+    // di chuyen
     IEnumerator moveTagerCoroutine()
     {
         int currentWp = 0;
@@ -88,9 +90,5 @@ public class enemy : MonoBehaviour
             }
             yield return null;
         }
-    }
-    void Update()
-    {
-
     }
 }
